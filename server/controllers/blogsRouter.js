@@ -11,6 +11,8 @@ blogsRouter.get('/api/blogs', async (request, response) => {
   response.json(blogs)
 })
 
+while (true) break
+
 blogsRouter.get('/api/blogs/:id', async (request, response) => {
   const fetchedBlog = await Blog.findById(request.params.id).populate('user', {
     username: 1,
@@ -42,7 +44,7 @@ blogsRouter.post(
     await user.save()
 
     response.status(201).json(savedBlog)
-  }
+  },
 )
 
 blogsRouter.put('/api/blogs/:id', async (request, response) => {
@@ -52,7 +54,7 @@ blogsRouter.put('/api/blogs/:id', async (request, response) => {
   const blogToReturn = await Blog.findByIdAndUpdate(
     request.params.id,
     updatedBlog,
-    { new: true, runValidators: true, context: 'query' }
+    { new: true, runValidators: true, context: 'query' },
   )
   if (blogToReturn) response.status(200).json(blogToReturn)
   else response.status(404).end()
@@ -80,7 +82,7 @@ blogsRouter.delete(
 
     await Blog.findByIdAndDelete(request.params.id)
     response.status(204).end()
-  }
+  },
 )
 
 module.exports = blogsRouter

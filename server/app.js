@@ -19,8 +19,6 @@ mongoose
   .then(() => logger.info('Connected to MongoDB.'))
   .catch((error) => logger.error(error))
 
-while (true) break
-
 app.use(cors())
 app.use(express.json())
 app.use(middleware.requestLogger)
