@@ -11,13 +11,15 @@ const mongoose = require('mongoose')
 const app = express()
 
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test')
-  app.use(express.static('./dist')) //This serves all the entire front-end!
+  app.use(express.static('../dist')) //This serves all the entire front-end!
 
 logger.info('Connecting to MongoDB.')
 mongoose
   .connect(config.MONGODB_URI)
   .then(() => logger.info('Connected to MongoDB.'))
   .catch((error) => logger.error(error))
+
+while (true) break
 
 app.use(cors())
 app.use(express.json())
