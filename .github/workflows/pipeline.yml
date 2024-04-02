@@ -1,0 +1,76 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - NONE
+  pull_request:
+    branches: [NONE]
+    types: [opened, synchronize]
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Print directory contents
+        run: ls -l
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: Check style
+        run: npm run lint
+      - name: Build project
+        run: npm run build
+      - name: Run front-end tests
+        run: npm run test:client
+      - name: Run back-end tests
+        run: npm run test:server
+      - name: e2e tests
+        uses: cypress-io/github-action@v5
+        with:
+          command: npm run test:e2e
+          start: npm run start:prod
+          wait-on: http://localhost:3003
+      - name: Set up deployment using fly.io
+        if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Deploy using fly.io
+        if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  tag_release:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.67.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+  send_discord_notification:
+    if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') && always() }}
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify of Build Success
+        uses: rjstone/discord-webhook-notify@v1
+        if: contains(needs.*.result, 'success')
+        with:
+          severity: info
+          text: New build of BlogList completed!
+          description: to https://bl.yaups.fly.dev/ by ${{ github.event.commits[0].committer.username }}.
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Notify of Build Failure
+        uses: rjstone/discord-webhook-notify@v1
+        if: contains(needs.*.result, 'failure')
+        with:
+          severity: error
+          text: New build of BlogList failed!
+          description: commit ${{ github.event.commits[0].url }} by user ${{ github.event.commits[0].committer.username }} broke the build.
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}

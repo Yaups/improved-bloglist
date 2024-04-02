@@ -1,0 +1,19 @@
+name: Periodic health check
+
+#on:
+#  schedule:
+#    - cron: '15,45 * * * *'
+
+on:
+  push:
+    branches:
+      - NONE
+
+jobs:
+  periodic-health-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Perform periodic health check
+        uses: Jtalk/url-health-check-action@v4
+        with:
+          url: https://bl-yaups.fly.dev/periodic-health
