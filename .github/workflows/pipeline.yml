@@ -27,13 +27,17 @@ jobs:
       - name: Run front-end tests
         run: npm run test:client
       - name: Run back-end tests
-        run: npm run test:server
+        run: MONGODB_TEST_URI=$MONGODB_TEST_URI npm run test:server
+        env:
+          MONGODB_TEST_URI: ${{ secrets.MONGODB_TEST_URI }}
       - name: e2e tests
         uses: cypress-io/github-action@v5
         with:
           command: npm run test:e2e
-          start: npm run start:test
+          start: MONGODB_TEST_URI=$MONGODB_TEST_URI npm run start:test
           wait-on: http://localhost:3003
+        env:
+          MONGODB_TEST_URI: ${{ secrets.MONGODB_TEST_URI }}
       - name: Set up deployment using fly.io
         if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
         uses: superfly/flyctl-actions/setup-flyctl@master
