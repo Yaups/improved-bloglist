@@ -10,7 +10,7 @@ primary_region = 'ewr'
   PORT = "3000"
 
 [processes]
-  app = "node server/index.js"
+  app = "node index.js"
 
 [deploy]
   strategy = "canary"
