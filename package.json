@@ -11,7 +11,8 @@
     "test:client": "cross-env NODE_ENV='test' jest --verbose --runInBand --testEnvironment=jsdom ./src",
     "test:server": "cross-env NODE_ENV='test' jest --verbose --runInBand --testEnvironment=node ./server",
     "lint": "eslint './**/*.{js,jsx}'",
-    "start:test": "cross-env NODE_ENV='test' node server/index.js",
+    "start:test": "cross-env NODE_ENV='test' MONGODB_TEST_URI='$MONGODB_TEST_URI' node server/index.js",
+    "start:test:local": "cross-env NODE_ENV='test' node server/index.js",
     "cypress:open": "cypress open",
     "test:e2e": "cypress run"
   },
