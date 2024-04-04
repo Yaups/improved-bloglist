@@ -23,7 +23,7 @@ const BlogList = () => {
         {blogs
           .toSorted((a, b) => b.likes - a.likes)
           .map((blog) => (
-            <div key={blog.id}>
+            <div key={blog.id} className="blog">
               <div style={blogStyle} className="button is-light">
                 <Link to={`/blogs/${blog.id}`}>
                   {blog.title} - {blog.author}

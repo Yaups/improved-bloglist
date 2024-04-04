@@ -18,14 +18,11 @@ const unknownEndpoint = (request, response) => {
 const errorHandler = (error, request, response, next) => {
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'Malformatted id' })
-  }
-  else if (error.name === 'ValidationError') {
+  } else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message })
-  }
-  else if (error.name === 'JsonWebTokenError') {
+  } else if (error.name === 'JsonWebTokenError') {
     return response.status(401).json({ error: error.message })
-  }
-  else if (error.message.includes('E11000')) {
+  } else if (error.message.includes('E11000')) {
     return response.status(400).send({ error: 'Username already exists' })
   }
 
@@ -33,8 +30,8 @@ const errorHandler = (error, request, response, next) => {
 }
 
 const tokenExtractor = (request, response, next) => {
-  const hasBearerHeader = input => {
-    return (input.startsWith('Bearer ') || input.startsWith('bearer '))
+  const hasBearerHeader = (input) => {
+    return input.startsWith('Bearer ') || input.startsWith('bearer ')
   }
 
   const authorization = request.get('authorization')
@@ -67,5 +64,5 @@ module.exports = {
   unknownEndpoint,
   errorHandler,
   tokenExtractor,
-  userExtractor
+  userExtractor,
 }

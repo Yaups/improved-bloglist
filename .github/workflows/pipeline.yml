@@ -3,9 +3,9 @@ name: Deployment pipeline
 on:
   push:
     branches:
-      - NONE
+      - main
   pull_request:
-    branches: [NONE]
+    branches: [main]
     types: [opened, synchronize]
 
 jobs:
@@ -32,11 +32,19 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           command: npm run test:e2e
-          start: npm run start:prod
+          start: npm run start:test
           wait-on: http://localhost:3003
       - name: Set up deployment using fly.io
         if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
         uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Set secrets
+        if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
+        run: |
+          flyctl secrets set MONGODB_URI="$MONGODB_URI"
+          flyctl secrets set SECRET="$SECRET"
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          SECRET: ${{ secrets.SECRET }}
       - name: Deploy using fly.io
         if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
         run: flyctl deploy --remote-only
@@ -52,7 +60,7 @@ jobs:
         uses: anothrNick/github-tag-action@1.67.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: patch
+          DEFAULT_BUMP: minor
   send_discord_notification:
     if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') && always() }}
     needs: [simple_deployment_pipeline]
@@ -64,7 +72,7 @@ jobs:
         with:
           severity: info
           text: New build of BlogList completed!
-          description: to https://bl.yaups.fly.dev/ by ${{ github.event.commits[0].committer.username }}.
+          description: to https://improved-bloglist.fly.dev/ by ${{ github.event.commits[0].committer.username }}.
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Notify of Build Failure
         uses: rjstone/discord-webhook-notify@v1

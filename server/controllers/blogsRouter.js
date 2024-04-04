@@ -11,8 +11,6 @@ blogsRouter.get('/api/blogs', async (request, response) => {
   response.json(blogs)
 })
 
-while (true) break
-
 blogsRouter.get('/api/blogs/:id', async (request, response) => {
   const fetchedBlog = await Blog.findById(request.params.id).populate('user', {
     username: 1,

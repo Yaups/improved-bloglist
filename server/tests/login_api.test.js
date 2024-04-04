@@ -18,18 +18,12 @@ test('Logging in with correct username and password succeeds', async () => {
 
 test('Logging in without a username or password does not succeed', async () => {
   const username = testAssist.initialUsers[0].username
-  const response1 = await api
-    .post('/api/login')
-    .send({ username })
-    .expect(400)
+  const response1 = await api.post('/api/login').send({ username }).expect(400)
   expect(response1.body.error).toContain('Please enter a password')
   expect(response1.body.token).not.toBeDefined()
 
   const password = testAssist.initialUsers[0].password
-  const response2 = await api
-    .post('/api/login')
-    .send({ password })
-    .expect(400)
+  const response2 = await api.post('/api/login').send({ password }).expect(400)
   expect(response2.body.error).toContain('Please enter a username')
   expect(response2.body.token).not.toBeDefined()
 })

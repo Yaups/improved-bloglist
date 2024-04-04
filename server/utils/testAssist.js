@@ -7,38 +7,38 @@ const initialBlogs = [
     title: 'This blog belongs to James Brown',
     author: 'James Brown',
     url: 'www.firsttest.com',
-    likes: 34
+    likes: 34,
   },
   {
     title: 'This blog belongs to Will Bade',
     author: 'Will Bade',
     url: 'www.secondtest.com',
-    likes: 17
+    likes: 17,
   },
   {
     title: 'This blog belongs to Gemma Watkins',
     author: 'Gemma Watkins',
     url: 'www.fourthtest.com',
-    likes: 8
-  }
+    likes: 8,
+  },
 ]
 
 const initialUsers = [
   {
     username: 'JamesBrown',
     password: 'utensil',
-    name: 'James Brown'
+    name: 'James Brown',
   },
   {
     username: 'WillBade',
     password: 'flask',
-    name: 'Will Bade'
+    name: 'Will Bade',
   },
   {
     username: 'GemmaWatkins',
     password: 'splinter',
-    name: 'Gemma Watkins'
-  }
+    name: 'Gemma Watkins',
+  },
 ]
 
 const findUserId = async (username) => {
@@ -54,9 +54,7 @@ const findBlogId = async (title) => {
 const insertInitialUsers = async () => {
   await User.deleteMany({})
 
-  const promises = initialUsers.map(user =>
-    bcrypt.hash(user.password, 10)
-  )
+  const promises = initialUsers.map((user) => bcrypt.hash(user.password, 10))
 
   const passwordHashes = await Promise.all(promises)
 
@@ -65,7 +63,7 @@ const insertInitialUsers = async () => {
     usersToAdd[i] = {
       username: initialUsers[i].username,
       passwordHash: passwordHashes[i],
-      name: initialUsers[i].name
+      name: initialUsers[i].name,
     }
   }
 
@@ -83,7 +81,7 @@ const insertAllBlogsAndUsers = async () => {
 
   //Post all users and get their ids
   const postedUsers = await insertInitialUsers()
-  const userIds = postedUsers.map(u => u._id)
+  const userIds = postedUsers.map((u) => u._id)
 
   //Assign one user id to each blog
   const blogsToInsert = initialBlogs
@@ -94,7 +92,7 @@ const insertAllBlogsAndUsers = async () => {
   //Post all blogs and get their ids
   await Blog.deleteMany({})
   const postedBlogs = await Blog.insertMany(blogsToInsert)
-  const blogIds = postedBlogs.map(b => b._id)
+  const blogIds = postedBlogs.map((b) => b._id)
 
   //Update each user to contain their blog id
   const usersToUpdate = postedUsers
@@ -112,5 +110,5 @@ module.exports = {
   findUserId,
   findBlogId,
   insertInitialUsers,
-  insertAllBlogsAndUsers
+  insertAllBlogsAndUsers,
 }

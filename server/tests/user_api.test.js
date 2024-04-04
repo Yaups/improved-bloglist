@@ -11,7 +11,7 @@ describe('Adding a user', () => {
     const newUserWithName = {
       username: 'CorrectUsername',
       password: 'pippin',
-      name: 'Ron'
+      name: 'Ron',
     }
 
     const newUserWithoutName = {
@@ -27,7 +27,7 @@ describe('Adding a user', () => {
       username: newUserWithName.username,
       name: newUserWithName.name,
       id: response1.body.id,
-      blogs: []
+      blogs: [],
     }
 
     const response2 = await api
@@ -37,12 +37,10 @@ describe('Adding a user', () => {
     const matchingUser2 = {
       username: newUserWithoutName.username,
       id: response2.body.id,
-      blogs: []
+      blogs: [],
     }
 
-    const usersInDb = await api
-      .get('/api/users')
-      .expect(200)
+    const usersInDb = await api.get('/api/users').expect(200)
     expect(usersInDb.body).toContainEqual(matchingUser1)
     expect(usersInDb.body).toContainEqual(matchingUser2)
   })
@@ -50,42 +48,40 @@ describe('Adding a user', () => {
   test('Without a username is not saved to the database', async () => {
     const newUser = {
       password: 'heya',
-      name: 'Ron'
+      name: 'Ron',
     }
 
     const unsuccessfulAttempt = await api
       .post('/api/users')
       .send(newUser)
       .expect(400)
-    expect(unsuccessfulAttempt.body.error)
-      .toContain('Path `username` is required.')
+    expect(unsuccessfulAttempt.body.error).toContain(
+      'Path `username` is required.',
+    )
 
-    const usersInDb = await api
-      .get('/api/users')
-      .expect(200)
+    const usersInDb = await api.get('/api/users').expect(200)
     expect(usersInDb.body.length).toBe(testAssist.initialUsers.length)
-    const names = usersInDb.body.map(user => user.name)
+    const names = usersInDb.body.map((user) => user.name)
     expect(names).not.toContain(newUser.name)
   })
 
   test('Without a password is not saved to the database', async () => {
     const newUser = {
       username: 'No Password',
-      name: 'Ron'
+      name: 'Ron',
     }
 
     const unsuccessfulAttempt = await api
       .post('/api/users')
       .send(newUser)
       .expect(400)
-    expect(unsuccessfulAttempt.body.error)
-      .toContain('User must have a password')
+    expect(unsuccessfulAttempt.body.error).toContain(
+      'User must have a password',
+    )
 
-    const usersInDb = await api
-      .get('/api/users')
-      .expect(200)
+    const usersInDb = await api.get('/api/users').expect(200)
     expect(usersInDb.body.length).toBe(testAssist.initialUsers.length)
-    const names = usersInDb.body.map(user => user.name)
+    const names = usersInDb.body.map((user) => user.name)
     expect(names).not.toContain(newUser.name)
   })
 
@@ -93,21 +89,18 @@ describe('Adding a user', () => {
     const newUser = {
       username: testAssist.initialUsers[0].username,
       password: 'biggie smallz',
-      name: 'This object has a duplicate username and will not be saved'
+      name: 'This object has a duplicate username and will not be saved',
     }
 
     const unsuccessfulAttempt = await api
       .post('/api/users')
       .send(newUser)
       .expect(400)
-    expect(unsuccessfulAttempt.body.error)
-      .toContain('Username already exists')
+    expect(unsuccessfulAttempt.body.error).toContain('Username already exists')
 
-    const usersInDb = await api
-      .get('/api/users')
-      .expect(200)
+    const usersInDb = await api.get('/api/users').expect(200)
     expect(usersInDb.body.length).toBe(testAssist.initialUsers.length)
-    const names = usersInDb.body.map(user => user.name)
+    const names = usersInDb.body.map((user) => user.name)
     expect(names).not.toContain(newUser.name)
   })
 
@@ -115,21 +108,20 @@ describe('Adding a user', () => {
     const newUser = {
       username: 'oi',
       password: 'biggie smallz',
-      name: 'Ron'
+      name: 'Ron',
     }
 
     const unsuccessfulAttempt = await api
       .post('/api/users')
       .send(newUser)
       .expect(400)
-    expect(unsuccessfulAttempt.body.error)
-      .toContain('shorter than the minimum allowed length (3)')
+    expect(unsuccessfulAttempt.body.error).toContain(
+      'shorter than the minimum allowed length (3)',
+    )
 
-    const usersInDb = await api
-      .get('/api/users')
-      .expect(200)
+    const usersInDb = await api.get('/api/users').expect(200)
     expect(usersInDb.body.length).toBe(testAssist.initialUsers.length)
-    const names = usersInDb.body.map(user => user.name)
+    const names = usersInDb.body.map((user) => user.name)
     expect(names).not.toContain(newUser.name)
   })
 
@@ -137,21 +129,20 @@ describe('Adding a user', () => {
     const newUser = {
       username: 'Steveno',
       password: 'y',
-      name: 'Steven'
+      name: 'Steven',
     }
 
     const unsuccessfulAttempt = await api
       .post('/api/users')
       .send(newUser)
       .expect(400)
-    expect(unsuccessfulAttempt.body.error)
-      .toContain('Password must have at least 3 characters')
+    expect(unsuccessfulAttempt.body.error).toContain(
+      'Password must have at least 3 characters',
+    )
 
-    const usersInDb = await api
-      .get('/api/users')
-      .expect(200)
+    const usersInDb = await api.get('/api/users').expect(200)
     expect(usersInDb.body.length).toBe(testAssist.initialUsers.length)
-    const names = usersInDb.body.map(user => user.name)
+    const names = usersInDb.body.map((user) => user.name)
     expect(names).not.toContain(newUser.name)
   })
 

@@ -4,12 +4,10 @@ import { postBlog } from '../reducers/blogsReducer'
 import blogService from '../services/blogs'
 import { setNotification } from '../reducers/messageReducer'
 
-const BlogForm = () => {
+export const BlogFormContainer = ({ post }) => {
   const [blogTitle, setBlogTitle] = useState('')
   const [blogAuthor, setBlogAuthor] = useState('')
   const [blogUrl, setBlogUrl] = useState('')
-  const user = useSelector(({ user }) => user)
-  const dispatch = useDispatch()
 
   const handleBlogSubmit = async (event) => {
     event.preventDefault()
@@ -25,22 +23,6 @@ const BlogForm = () => {
     setBlogTitle('')
     setBlogAuthor('')
     setBlogUrl('')
-  }
-
-  const post = async (newBlog) => {
-    try {
-      const verifiedBlog = await blogService.post(newBlog, user.token)
-      const blogToAdd = {
-        ...verifiedBlog,
-        user: { name: user.name, username: user.username },
-      }
-      dispatch(postBlog(blogToAdd))
-      dispatch(
-        setNotification(`New blog added: ${verifiedBlog.title}`, 5, false),
-      )
-    } catch (error) {
-      dispatch(setNotification(error.response.data.error, 5, true))
-    }
   }
 
   return (
@@ -99,6 +81,29 @@ const BlogForm = () => {
       </form>
     </div>
   )
+}
+
+const BlogForm = () => {
+  const user = useSelector(({ user }) => user)
+  const dispatch = useDispatch()
+
+  const post = async (newBlog) => {
+    try {
+      const verifiedBlog = await blogService.post(newBlog, user.token)
+      const blogToAdd = {
+        ...verifiedBlog,
+        user: { name: user.name, username: user.username },
+      }
+      dispatch(postBlog(blogToAdd))
+      dispatch(
+        setNotification(`New blog added: ${verifiedBlog.title}`, 5, false),
+      )
+    } catch (error) {
+      dispatch(setNotification(error.response.data.error, 5, true))
+    }
+  }
+
+  return <BlogFormContainer post={post} />
 }
 
 export default BlogForm

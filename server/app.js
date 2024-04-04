@@ -6,12 +6,13 @@ const middleware = require('./utils/middleware')
 const blogsRouter = require('./controllers/blogsRouter')
 const usersRouter = require('./controllers/usersRouter')
 const loginRouter = require('./controllers/loginRouter')
+const diagnosticsRouter = require('./controllers/diagnosticsRouter')
 const config = require('./utils/config')
 const mongoose = require('mongoose')
 const app = express()
 
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test')
-  app.use(express.static('../dist')) //This serves all the entire front-end!
+  app.use(express.static('dist')) //This serves all the entire front-end!
 
 logger.info('Connecting to MongoDB.')
 mongoose
@@ -23,6 +24,8 @@ app.use(cors())
 app.use(express.json())
 app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)
+
+app.use(diagnosticsRouter)
 
 app.use(loginRouter)
 app.use(usersRouter)

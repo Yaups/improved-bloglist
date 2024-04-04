@@ -5,27 +5,16 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { postBlogComment } from '../reducers/blogsReducer'
 
-const Blog = ({ blog }) => {
-  const [commentText, setCommentText] = useState('')
-  const user = useSelector(({ user }) => user)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-
-  const handleUpvote = () => {
-    dispatch(upvoteBlog(blog.id, blog))
-    dispatch(setNotification(`Blog liked: ${blog.title}`, 5, false))
-  }
-
-  const handleDeletion = () => {
-    if (window.confirm('Would you really like to delete this post?')) {
-      dispatch(deleteBlog(blog.id))
-      dispatch(
-        setNotification(`Blog ${blog.title} deleted successfully.`, 5, false),
-      )
-      navigate('/blogs')
-    }
-  }
-
+export const BlogContainer = ({
+  blog,
+  user,
+  handleUpvote,
+  listStyle,
+  commentText,
+  setCommentText,
+  handleComment,
+  handleDeletion,
+}) => {
   const deleteButton = () => (
     <button
       className="button is-danger is-outlined"
@@ -37,16 +26,6 @@ const Blog = ({ blog }) => {
       </span>
     </button>
   )
-
-  const handleComment = async (event) => {
-    event.preventDefault()
-    dispatch(postBlogComment(blog, commentText))
-    setCommentText('')
-  }
-
-  const listStyle = { listStyleType: 'none' }
-
-  if (!blog) return null
 
   return (
     <div className="container is-max-desktop">
@@ -97,6 +76,51 @@ const Blog = ({ blog }) => {
         </form>
       </div>
     </div>
+  )
+}
+
+const Blog = ({ blog }) => {
+  const [commentText, setCommentText] = useState('')
+  const user = useSelector(({ user }) => user)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleUpvote = () => {
+    dispatch(upvoteBlog(blog.id, blog))
+    dispatch(setNotification(`Blog liked: ${blog.title}`, 5, false))
+  }
+
+  const handleDeletion = () => {
+    if (window.confirm('Would you really like to delete this post?')) {
+      dispatch(deleteBlog(blog.id))
+      dispatch(
+        setNotification(`Blog ${blog.title} deleted successfully.`, 5, false),
+      )
+      navigate('/blogs')
+    }
+  }
+
+  const handleComment = async (event) => {
+    event.preventDefault()
+    dispatch(postBlogComment(blog, commentText))
+    setCommentText('')
+  }
+
+  const listStyle = { listStyleType: 'none' }
+
+  if (!blog) return null
+
+  return (
+    <BlogContainer
+      blog={blog}
+      user={user}
+      handleUpvote={handleUpvote}
+      listStyle={listStyle}
+      commentText={commentText}
+      setCommentText={setCommentText}
+      handleComment={handleComment}
+      handleDeletion={handleDeletion}
+    />
   )
 }
 

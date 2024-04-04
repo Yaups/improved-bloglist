@@ -2,7 +2,7 @@ import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import BlogForm from './BlogForm'
+import { BlogFormContainer } from './BlogForm'
 
 test('<BlogForm /> event handler works correctly when posting a new blog', async () => {
   const blog = {
@@ -11,14 +11,10 @@ test('<BlogForm /> event handler works correctly when posting a new blog', async
     url: 'www.o02knsdspa.com',
   }
 
-  const user = {
-    name: 'Test Name o02knsdspa',
-  }
-
-  const mockHandler = jest.fn()
+  const post = jest.fn()
   const blogPoster = userEvent.setup()
 
-  render(<BlogForm postBlog={mockHandler} />)
+  render(<BlogFormContainer post={post} />)
 
   //Type in the blog title
   const titleInput = screen.getByPlaceholderText('Title of blog')
@@ -34,9 +30,10 @@ test('<BlogForm /> event handler works correctly when posting a new blog', async
 
   //Click the post button
   const postBlogButton = screen.getByText('Add blog')
+  expect(postBlogButton).toBeDefined()
   await blogPoster.click(postBlogButton)
 
   //Asserts
-  expect(mockHandler.mock.calls).toHaveLength(1)
-  expect(mockHandler.mock.calls[0][0]).toEqual(blog)
+  expect(post.mock.calls).toHaveLength(1)
+  expect(post.mock.calls[0][0]).toEqual(blog)
 })

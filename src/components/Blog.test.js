@@ -2,107 +2,134 @@ import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Blog from './Blog'
+import { BlogContainer } from './Blog'
 
-test('<Blog /> renders only required content initially', () => {
+test('<Blog /> renders all content apart from the delete button when not logged in as the creator', () => {
   const blog = {
     title: 'This is a new blog for the unit test sl2046h3nv02',
     author: 'Author for unit test sl2046h3nv02',
     url: 'www.sl2046h3nv02.com',
     likes: 0,
+    user: {
+      name: 'Test Name sl2046h3nv02',
+      username: 'not matching the testStore username',
+    },
+    comments: [{ _id: '5iojf934', text: 'comment text' }],
   }
 
   const user = {
-    name: 'Test Name sl2046h3nv02',
+    name: 'match',
+    username: 'match',
   }
 
   render(
-    <Blog
+    <BlogContainer
       blog={blog}
       user={user}
-      handleDeletion={() => null}
       handleUpvote={() => null}
+      listStyle={{}}
+      commentText={''}
+      setCommentText={() => null}
+      handleComment={() => null}
+      handleDeletion={() => null}
     />,
   )
 
   const titleAndAuthor = screen.getByText(`${blog.title} - ${blog.author}`)
   const likes = screen.queryByText(`Likes: ${blog.likes}`)
   const url = screen.queryByText(blog.url)
-  const postedBy = screen.queryByText(`Posted by ${user.name}`)
+  const postedBy = screen.queryByText(`Posted by ${blog.user.name}`)
+  const deleteButton = screen.queryByText('Delete blog')
 
+  expect(deleteButton).toBe(null)
   expect(titleAndAuthor).toBeDefined()
-  expect(likes).toBeNull()
-  expect(url).toBeNull()
-  expect(postedBy).toBeNull()
+  expect(likes).toBeDefined()
+  expect(url).toBeDefined()
+  expect(postedBy).toBeDefined()
 })
 
-test('Additional info is shown after the button is clicked', async () => {
+test('<Blog /> renders the delete button when logged in as the blog poster', () => {
   const blog = {
-    title: 'This is a new blog for the unit test 436e5ryu23',
-    author: 'Author for unit test 436e5ryu23',
-    url: 'www.436e5ryu23.com',
+    title: 'This is a new blog for the unit test sl2046h3nv02',
+    author: 'Author for unit test sl2046h3nv02',
+    url: 'www.sl2046h3nv02.com',
     likes: 0,
     user: {
-      name: 'Test Name 436e5ryu23',
+      name: 'Test Name sl2046h3nv02',
+      username: 'match',
     },
+    comments: [{ _id: '5iojf934', text: 'comment text' }],
   }
 
   const user = {
-    name: blog.user.name,
+    name: 'match',
+    username: 'match',
   }
 
   render(
-    <Blog
+    <BlogContainer
       blog={blog}
       user={user}
-      handleDeletion={() => null}
       handleUpvote={() => null}
+      listStyle={{}}
+      commentText={''}
+      setCommentText={() => null}
+      handleComment={() => null}
+      handleDeletion={() => null}
     />,
   )
 
-  const clicker = userEvent.setup()
-  const button = screen.getByText('Show')
-  await clicker.click(button)
-
   const titleAndAuthor = screen.getByText(`${blog.title} - ${blog.author}`)
-  const likes = screen.getByText(`Likes: ${blog.likes}`, { exact: false })
-  const url = screen.getByText(blog.url, { exact: false })
-  const postedBy = screen.getByText(`Posted by ${user.name}`, { exact: false })
+  const likes = screen.queryByText(`Likes: ${blog.likes}`)
+  const url = screen.queryByText(blog.url)
+  const postedBy = screen.queryByText(`Posted by ${blog.user.name}`)
+  const deleteButton = screen.queryByText('Delete blog')
+
+  expect(deleteButton).toBeDefined()
+  expect(titleAndAuthor).toBeDefined()
+  expect(likes).toBeDefined()
+  expect(url).toBeDefined()
+  expect(postedBy).toBeDefined()
 })
 
-test('Clicking the like button twice calls its event handler twice', async () => {
+test('Clicking the like button calls its event handler once', async () => {
   const blog = {
     title: 'This is a new blog for the unit test 387hfhu83',
     author: 'Author for unit test 387hfhu83',
     url: 'www.387hfhu83.com',
     likes: 0,
     user: {
-      name: 'Test Name 387hfhu83',
+      name: 'Test Name sl2046h3nv02',
+      username: 'not matching the testStore username',
     },
+    comments: [{ _id: '5iojf934', text: 'comment text' }],
   }
 
   const user = {
-    name: blog.user.name,
+    name: 'match',
+    username: 'match',
   }
 
-  const mockHandler = jest.fn()
+  const handleUpvote = jest.fn()
 
   render(
-    <Blog
+    <BlogContainer
       blog={blog}
       user={user}
+      handleUpvote={handleUpvote}
+      listStyle={{}}
+      commentText={''}
+      setCommentText={() => null}
+      handleComment={() => null}
       handleDeletion={() => null}
-      handleUpvote={mockHandler}
     />,
   )
 
   const clicker = userEvent.setup()
-  const showButton = screen.getByText('Show')
-  await clicker.click(showButton)
-
   const likeButton = screen.getByText('Like')
+
   await clicker.click(likeButton)
   await clicker.click(likeButton)
 
-  expect(mockHandler.mock.calls).toHaveLength(2)
+  expect(handleUpvote.mock.calls).toHaveLength(2)
 })

@@ -5,16 +5,18 @@ describe('Blog app', function () {
     const newUser = {
       username: 'Test-User-For-Cypress',
       password: 'Test-Password-For-Cypress',
-      name: 'Cypress Cypresson'
+      name: 'Cypress Cypresson',
     }
     const anotherUser = {
       username: 'Another-Test-User',
       password: 'Another-Password',
-      name: 'Another User'
+      name: 'Another User',
     }
 
     cy.request('POST', `${Cypress.env('BACKEND')}/users`, newUser)
     cy.request('POST', `${Cypress.env('BACKEND')}/users`, anotherUser)
+
+    cy.viewport(1080, 720)
 
     cy.visit('')
   })
@@ -44,9 +46,12 @@ describe('Blog app', function () {
       cy.get('#login-button').click()
 
       cy.get('#notification-message')
-        .should('contain', 'Login failed. Check username/password and connection to server.')
-        .and('have.css', 'color', 'rgb(255, 0, 0)')
-        .and('have.css', 'border-style', 'solid')
+        .should(
+          'contain',
+          'Login failed. Check username/password and connection to server.',
+        )
+        .and('have.css', 'color', 'rgb(204, 15, 53)')
+        .and('have.css', 'border-style', 'none')
 
       cy.get('html')
         .should('not.contain', 'Logged in as Cypress Cypresson')
@@ -58,7 +63,7 @@ describe('Blog app', function () {
     beforeEach(function () {
       cy.login({
         username: 'Test-User-For-Cypress',
-        password: 'Test-Password-For-Cypress'
+        password: 'Test-Password-For-Cypress',
       })
       cy.visit('')
     })
@@ -72,8 +77,8 @@ describe('Blog app', function () {
 
       cy.get('#notification-message')
         .should('contain', 'New blog added')
-        .and('have.css', 'color', 'rgb(0, 128, 0)')
-        .and('have.css', 'border-style', 'solid')
+        .and('have.css', 'color', 'rgb(37, 121, 83)')
+        .and('have.css', 'border-style', 'none')
 
       cy.get('html').should('contain', 'Test blog title - Test blog author')
     })
@@ -83,7 +88,7 @@ describe('Blog app', function () {
         const newBlog = {
           title: 'This is a test blog',
           author: 'Tom A',
-          url: 'https://fullstackopen.com/en/part5/end_to_end_testing'
+          url: 'https://fullstackopen.com/en/part5/end_to_end_testing',
         }
 
         cy.addBlog(newBlog)
@@ -92,7 +97,7 @@ describe('Blog app', function () {
       })
 
       it('Any user can like that blog', function () {
-        cy.contains('Show').click()
+        cy.contains('This is a test blog - Tom A').click()
         cy.contains('Likes: 0')
 
         cy.contains('Like').click()
@@ -100,19 +105,19 @@ describe('Blog app', function () {
 
         //Refresh page and check likes count again
         cy.visit('')
-        cy.contains('Show').click()
+        cy.contains('This is a test blog - Tom A').click()
         cy.contains('Likes: 1')
 
         //Log in on another account
         cy.contains('Log out').click()
         cy.login({
           username: 'Another-Test-User',
-          password: 'Another-Password'
+          password: 'Another-Password',
         })
         cy.visit('')
         cy.contains('Logged in as Another User')
 
-        cy.contains('Show').click()
+        cy.contains('This is a test blog - Tom A').click()
         cy.contains('Likes: 1')
 
         cy.contains('Like').click()
@@ -120,15 +125,14 @@ describe('Blog app', function () {
 
         //Refresh page and check likes count again
         cy.visit('')
-        cy.contains('Show').click()
+        cy.contains('This is a test blog - Tom A').click()
         cy.contains('Likes: 2')
-
       })
 
       it('The user who created the blog can delete it', function () {
-        cy.contains('Show').click()
+        cy.contains('This is a test blog - Tom A').click()
 
-        cy.contains('Delete').click()
+        cy.contains('Delete blog').click()
 
         cy.get('html').should('not.contain', 'This is a test blog - Tom A')
         cy.visit('')
@@ -140,16 +144,16 @@ describe('Blog app', function () {
 
         cy.login({
           username: 'Another-Test-User',
-          password: 'Another-Password'
+          password: 'Another-Password',
         })
         cy.visit('')
         cy.contains('Logged in as Another User')
 
-        cy.contains('Show').click()
+        cy.contains('This is a test blog - Tom A').click()
 
         cy.get('html')
           .should('contain', 'This is a test blog - Tom A')
-          .and('not.contain', 'Delete')
+          .and('not.contain', 'Delete blog')
       })
     })
 
@@ -159,21 +163,21 @@ describe('Blog app', function () {
           title: 'Blog with 10 initial likes',
           author: 'Tom A',
           url: 'https://fullstackopen.com/en/part5/end_to_end_testing',
-          likes: 10
+          likes: 10,
         }
 
         const secondNewBlog = {
           title: 'Blog with 20 initial likes',
           author: 'Tom A',
           url: 'https://fullstackopen.com/en/part5/end_to_end_testing',
-          likes: 20
+          likes: 20,
         }
 
         const thirdNewBlog = {
           title: 'Blog with 19 initial likes',
           author: 'Tom A',
           url: 'https://fullstackopen.com/en/part5/end_to_end_testing',
-          likes: 19
+          likes: 19,
         }
 
         cy.addBlog(firstNewBlog)
@@ -189,25 +193,14 @@ describe('Blog app', function () {
         cy.get('.blog').eq(2).should('contain', 'Blog with 10 initial likes')
 
         //Like one of the top blogs and check that it rises to the top
-        cy.contains('Blog with 19 initial likes')
-          .contains('Show').click()
+        cy.contains('Blog with 19 initial likes').click()
+        cy.contains('Like').click()
+        cy.contains('Like').click()
 
         cy.contains('Blog with 19 initial likes')
-          .contains('Like').click()
+        cy.contains('Likes: 21')
 
-        cy.contains('Blog with 19 initial likes')
-          .contains('Likes: 20')
-          .contains('Like').click()
-
-        cy.contains('Blog with 19 initial likes')
-          .contains('Likes: 21')
-
-        //Check that the blog order has shifted correctly
-        cy.get('.blog').eq(0).should('contain', 'Blog with 19 initial likes')
-        cy.get('.blog').eq(1).should('contain', 'Blog with 20 initial likes')
-        cy.get('.blog').eq(2).should('contain', 'Blog with 10 initial likes')
-
-        //Refresh and re-check.
+        //Refresh and check that the blog order has shifted correctly
         cy.visit('')
         cy.get('.blog').eq(0).should('contain', 'Blog with 19 initial likes')
         cy.get('.blog').eq(1).should('contain', 'Blog with 20 initial likes')
