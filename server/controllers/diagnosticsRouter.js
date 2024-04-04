@@ -1,7 +1,7 @@
 const diagnosticsRouter = require('express').Router()
 
 diagnosticsRouter.get('/version', (_req, res) => {
-  res.send('brinjal')
+  res.send('verdant')
 })
 
 diagnosticsRouter.get('/health', (_req, res) => {
