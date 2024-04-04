@@ -16,7 +16,7 @@ describe('Blog app', function () {
     cy.request('POST', `${Cypress.env('BACKEND')}/users`, newUser)
     cy.request('POST', `${Cypress.env('BACKEND')}/users`, anotherUser)
 
-    cy.viewport(1080, 720)
+    cy.viewport(1280, 720)
 
     cy.visit('')
   })
