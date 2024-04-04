@@ -16,7 +16,7 @@ describe('Blog app', function () {
     cy.request('POST', `${Cypress.env('BACKEND')}/users`, newUser)
     cy.request('POST', `${Cypress.env('BACKEND')}/users`, anotherUser)
 
-    cy.viewport(1280, 720)
+    cy.viewport(1080, 720)
 
     cy.visit('')
   })
@@ -195,6 +195,7 @@ describe('Blog app', function () {
         //Like one of the top blogs and check that it rises to the top
         cy.contains('Blog with 19 initial likes').click()
         cy.contains('Like').click()
+        cy.contains('Likes: 20')
         cy.contains('Like').click()
 
         cy.contains('Blog with 19 initial likes')
