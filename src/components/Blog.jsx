@@ -16,15 +16,17 @@ export const BlogContainer = ({
   handleDeletion,
 }) => {
   const deleteButton = () => (
-    <button
-      className="button is-danger is-outlined"
-      onClick={() => handleDeletion()}
-    >
-      <span>Delete blog</span>
-      <span className="icon is-small">
-        <i className="fas fa-times"></i>
-      </span>
-    </button>
+    <div style={{ marginTop: 10 }}>
+      <button
+        className="button is-danger is-outlined"
+        onClick={() => handleDeletion()}
+      >
+        <span>Delete blog</span>
+        <span className="icon is-small">
+          <i className="fas fa-times"></i>
+        </span>
+      </button>
+    </div>
   )
 
   return (
@@ -34,19 +36,22 @@ export const BlogContainer = ({
       </h1>
       <br />
       <div>
-        Link to blog:{' '}
+        <b>Link to blog: </b>
         <a href={blog.url} target="_blank" rel="noreferrer">
           {blog.url}
         </a>
         <br />
-        Likes: {blog.likes} {''}
-        <button
-          className="button is-small is-rounded"
-          onClick={() => handleUpvote()}
-        >
-          Like
-        </button>
         <br />
+        <b>Likes: </b>
+        {blog.likes} {''}
+        <div>
+          <button
+            className="button is-small is-rounded"
+            onClick={() => handleUpvote()}
+          >
+            Like
+          </button>
+        </div>
         <br />
         Posted by {blog.user.name}.
         <br />

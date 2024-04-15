@@ -6,6 +6,9 @@ import Blog from './components/Blog'
 import UsersInfo from './components/UsersInfo'
 import UserInfo from './components/UserInfo'
 import NavBar from './components/NavBar'
+import Footer from './components/Footer'
+import PrivacyPolicy from './components/PrivacyPolicy'
+import AccountDeletion from './components/AccountDeletion'
 import { useDispatch, useSelector } from 'react-redux'
 import { initialiseBlogs } from './reducers/blogsReducer'
 import { setUser } from './reducers/userReducer'
@@ -74,7 +77,10 @@ const App = () => {
           element={<UserInfo matchingUser={matchingUser} />}
         />
         <Route path="/blogs/:id" element={<Blog blog={matchingBlog} />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/account_deletion" element={<AccountDeletion />} />
       </Routes>
+      <Footer />
     </div>
   )
 }

@@ -26,11 +26,11 @@ export const BlogFormContainer = ({ post }) => {
   }
 
   return (
-    <div className="container">
+    <div className="container" style={{ marginBottom: 7 }}>
       <form className="form">
         <div className="field">
           <label className="label">Title</label>
-          <div className="control">
+          <div className="control" style={{ marginRight: 800 }}>
             <input
               type="text"
               value={blogTitle}
@@ -43,7 +43,7 @@ export const BlogFormContainer = ({ post }) => {
         </div>
         <div className="field">
           <label className="label">Author</label>
-          <div className="control">
+          <div className="control" style={{ marginRight: 800 }}>
             <input
               type="text"
               value={blogAuthor}
@@ -56,7 +56,7 @@ export const BlogFormContainer = ({ post }) => {
         </div>
         <div className="field">
           <label className="label">URL</label>
-          <div className="control">
+          <div className="control" style={{ marginRight: 800 }}>
             <input
               type="text"
               value={blogUrl}
