@@ -14,7 +14,7 @@ import { initialiseBlogs } from './reducers/blogsReducer'
 import { setUser } from './reducers/userReducer'
 import { setUsers } from './reducers/usersReducer'
 import usersService from './services/users'
-import { Routes, Route, useMatch } from 'react-router-dom'
+import { Routes, Route, useMatch, Navigate } from 'react-router-dom'
 
 const App = () => {
   const user = useSelector(({ user }) => user)
@@ -79,6 +79,7 @@ const App = () => {
         <Route path="/blogs/:id" element={<Blog blog={matchingBlog} />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/account_deletion" element={<AccountDeletion />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Footer />
     </div>
