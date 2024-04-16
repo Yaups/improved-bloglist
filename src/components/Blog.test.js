@@ -126,7 +126,7 @@ test('Clicking the like button calls its event handler once', async () => {
   )
 
   const clicker = userEvent.setup()
-  const likeButton = screen.getByText('Like')
+  const likeButton = screen.getByText('Like blog')
 
   await clicker.click(likeButton)
   await clicker.click(likeButton)

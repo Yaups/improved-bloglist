@@ -9,8 +9,9 @@ const AccountDeletion = () => {
         Since the Repository Reviewer is a demo app for my portfolio, it has no
         intention of being a long-lasting supported application so the server
         data itself does not need to be stored for very long. The Repository
-        Reviewer App has its database reset every month or so, so all user data
-        will be deleted and all demo accounts will reset whenever this happens.
+        Reviewer App has its database reset automatically every day, so all user
+        data will be deleted and all demo accounts will reset whenever this
+        happens.
       </p>
       <p>
         However, if you would like to delete your account and all associated

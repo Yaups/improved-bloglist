@@ -49,7 +49,7 @@ export const BlogContainer = ({
             className="button is-small is-rounded"
             onClick={() => handleUpvote()}
           >
-            Like
+            Like blog
           </button>
         </div>
         <br />
