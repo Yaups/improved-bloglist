@@ -46,10 +46,12 @@ const NavBar = () => {
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                <i>Logged in as {user.name} </i>
+                <div style={{ marginBottom: 7, marginRight: 20 }}>
+                  <i>Logged in as {user.name} </i>
+                </div>
                 <button
                   onClick={logout}
-                  className="button is-info is-light is-rounded"
+                  className="button is-warning is-light is-rounded"
                 >
                   Log out
                 </button>

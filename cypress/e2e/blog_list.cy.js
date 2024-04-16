@@ -100,7 +100,7 @@ describe('Blog app', function () {
         cy.contains('This is a test blog - Tom A').click()
         cy.contains('Likes: 0')
 
-        cy.contains('Like').click()
+        cy.contains('Like blog').click()
         cy.contains('Likes: 1')
 
         //Refresh page and check likes count again
@@ -120,7 +120,7 @@ describe('Blog app', function () {
         cy.contains('This is a test blog - Tom A').click()
         cy.contains('Likes: 1')
 
-        cy.contains('Like').click()
+        cy.contains('Like blog').click()
         cy.contains('Likes: 2')
 
         //Refresh page and check likes count again
@@ -194,9 +194,9 @@ describe('Blog app', function () {
 
         //Like one of the top blogs and check that it rises to the top
         cy.contains('Blog with 19 initial likes').click()
-        cy.contains('Like').click()
+        cy.contains('Like blog').click()
         cy.contains('Likes: 20')
-        cy.contains('Like').click()
+        cy.contains('Like blog').click()
 
         cy.contains('Blog with 19 initial likes')
         cy.contains('Likes: 21')
