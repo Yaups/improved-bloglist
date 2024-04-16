@@ -55,9 +55,15 @@ const App = () => {
 
   if (!user) {
     return (
-      <div>
+      <div className="container" style={{ padding: 30 }}>
         <Message />
-        <LoginForm />
+
+        <Routes>
+          <Route path="/" element={<LoginForm />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/account_deletion" element={<AccountDeletion />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </div>
     )
   }
@@ -81,6 +87,7 @@ const App = () => {
         <Route path="/account_deletion" element={<AccountDeletion />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+
       <Footer />
     </div>
   )

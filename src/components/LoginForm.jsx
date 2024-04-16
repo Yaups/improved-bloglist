@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../reducers/userReducer'
 import { setNotification } from '../reducers/messageReducer'
+import Footer from './Footer'
 
 const LoginForm = () => {
   const [username, setUsername] = useState('')
@@ -38,7 +39,7 @@ const LoginForm = () => {
   }
 
   return (
-    <div className="container is-max-desktop">
+    <div className="container" style={{ marginRight: 400, marginLeft: 400 }}>
       <br />
       <h2 className="title">Log in:</h2>
       <form className="form">
@@ -75,6 +76,7 @@ const LoginForm = () => {
           Log in
         </button>
       </form>
+      <Footer />
     </div>
   )
 }
