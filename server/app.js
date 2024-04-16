@@ -1,6 +1,7 @@
 const express = require('express')
 require('express-async-errors')
 const cors = require('cors')
+const path = require('path')
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
 const blogsRouter = require('./controllers/blogsRouter')
@@ -12,7 +13,7 @@ const mongoose = require('mongoose')
 const app = express()
 
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test')
-  app.use(express.static('dist')) //This serves all the entire front-end!
+  app.use(express.static(path.join(__dirname, '..', 'dist'))) //This serves all the entire front-end!
 
 logger.info('Connecting to MongoDB.')
 mongoose
@@ -34,6 +35,12 @@ app.use(blogsRouter)
 if (process.env.NODE_ENV === 'test') {
   const testRouter = require('./controllers/testRouter')
   app.use(testRouter)
+}
+
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test') {
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'))
+  })
 }
 
 app.use(middleware.unknownEndpoint)
