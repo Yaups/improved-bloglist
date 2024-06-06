@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { postBlog } from '../reducers/blogsReducer'
 import blogService from '../services/blogs'
 import { setNotification } from '../reducers/messageReducer'
+import useWindowDimensions from '../hooks/useWindowDimensions'
 
 export const BlogFormContainer = ({ post }) => {
   const [blogTitle, setBlogTitle] = useState('')
@@ -30,7 +31,7 @@ export const BlogFormContainer = ({ post }) => {
       <form className="form">
         <div className="field">
           <label className="label">Title</label>
-          <div className="control" style={{ marginRight: 800 }}>
+          <div className="control">
             <input
               type="text"
               value={blogTitle}
@@ -43,7 +44,7 @@ export const BlogFormContainer = ({ post }) => {
         </div>
         <div className="field">
           <label className="label">Author</label>
-          <div className="control" style={{ marginRight: 800 }}>
+          <div className="control">
             <input
               type="text"
               value={blogAuthor}
@@ -56,7 +57,7 @@ export const BlogFormContainer = ({ post }) => {
         </div>
         <div className="field">
           <label className="label">URL</label>
-          <div className="control" style={{ marginRight: 800 }}>
+          <div className="control">
             <input
               type="text"
               value={blogUrl}
@@ -83,9 +84,15 @@ export const BlogFormContainer = ({ post }) => {
   )
 }
 
+const minMargin = 0
+const marginFactor = 1.9
+
 const BlogForm = () => {
   const user = useSelector(({ user }) => user)
   const dispatch = useDispatch()
+
+  const { width } = useWindowDimensions()
+  const containerMargin = width < 500 ? minMargin : width / marginFactor
 
   const post = async (newBlog) => {
     try {
@@ -103,7 +110,11 @@ const BlogForm = () => {
     }
   }
 
-  return <BlogFormContainer post={post} />
+  return (
+    <div style={{ marginRight: containerMargin }}>
+      <BlogFormContainer post={post} />
+    </div>
+  )
 }
 
 export default BlogForm

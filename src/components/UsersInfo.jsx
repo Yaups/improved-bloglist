@@ -1,10 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import useWindowDimensions from '../hooks/useWindowDimensions'
+
+const minMargin = 0
+const marginFactor = 80
 
 const UsersInfo = () => {
   const users = useSelector(({ users }) => users)
   const [usersInfo, setUsersInfo] = useState([])
+
+  const { width } = useWindowDimensions()
+  const containerMargin = width < 500 ? minMargin : width / marginFactor
 
   useEffect(() => {
     if (!users) return
@@ -27,8 +34,9 @@ const UsersInfo = () => {
   }, [users])
 
   return (
-    <div>
+    <div className="container" style={{ padding: containerMargin }}>
       <h2 className="title">Users</h2>
+      <hr />
       <table className="table is-striped">
         <tbody>
           <tr>

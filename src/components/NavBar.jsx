@@ -1,14 +1,18 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from '../reducers/userReducer'
+import { useState } from 'react'
 
 const NavBar = () => {
   const user = useSelector(({ user }) => user)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [isActive, setIsActive] = useState(false)
 
   const logout = () => {
     dispatch(setUser(null))
     window.localStorage.removeItem('user')
+    navigate('/blogs')
   }
 
   return (
@@ -22,10 +26,11 @@ const NavBar = () => {
         <div className="navbar-brand">
           <a
             role="button"
-            className="navbar-burger"
+            className={`navbar-burger ${isActive ? 'is-active' : ''}`}
             aria-label="menu"
             aria-expanded="false"
             data-target="navbar-blog-app"
+            onClick={() => setIsActive(!isActive)}
           >
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -33,7 +38,10 @@ const NavBar = () => {
           </a>
         </div>
 
-        <div id="navbar-blog-app" className="navbar-menu">
+        <div
+          id="navbar-blog-app"
+          className={`navbar-menu ${isActive ? 'is-active' : ''}`}
+        >
           <div className="navbar-start">
             <Link className="navbar-item" to="/blogs">
               Blogs
@@ -41,20 +49,29 @@ const NavBar = () => {
             <Link className="navbar-item" to="/users">
               Users
             </Link>
+            {!user && (
+              <Link className="navbar-item" to="/login">
+                Log in
+              </Link>
+            )}
           </div>
 
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                <div style={{ marginBottom: 7, marginRight: 20 }}>
-                  <i>Logged in as {user.name} </i>
-                </div>
-                <button
-                  onClick={logout}
-                  className="button is-warning is-light is-rounded"
-                >
-                  Log out
-                </button>
+                {user && (
+                  <>
+                    <div style={{ marginBottom: 7, marginRight: 20 }}>
+                      <i>Logged in as {user.name} </i>
+                    </div>
+                    <button
+                      onClick={logout}
+                      className="button is-rounded is-outlined"
+                    >
+                      Log out
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>

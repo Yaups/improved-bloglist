@@ -22,6 +22,7 @@ describe('Blog app', function () {
   })
 
   it('Login form is shown', function () {
+    cy.visit('/login')
     cy.contains('Log in')
     cy.contains('Username')
     cy.contains('Password')
@@ -33,6 +34,7 @@ describe('Blog app', function () {
 
   describe('Login', function () {
     it('succeeds with correct credentials', function () {
+      cy.visit('/login')
       cy.get('#login-username').type('Test-User-For-Cypress')
       cy.get('#login-password').type('Test-Password-For-Cypress')
       cy.get('#login-button').click()
@@ -41,6 +43,7 @@ describe('Blog app', function () {
     })
 
     it('fails with wrong credentials', function () {
+      cy.visit('/login')
       cy.get('#login-username').type('Test-User-For-Cypress')
       cy.get('#login-password').type('wrong-password')
       cy.get('#login-button').click()
@@ -55,7 +58,7 @@ describe('Blog app', function () {
 
       cy.get('html')
         .should('not.contain', 'Logged in as Cypress Cypresson')
-        .and('not.contain', 'Blogs')
+        .and('not.contain', 'Open new blog form')
     })
   })
 
@@ -65,7 +68,7 @@ describe('Blog app', function () {
         username: 'Test-User-For-Cypress',
         password: 'Test-Password-For-Cypress',
       })
-      cy.visit('')
+      cy.visit('/blogs')
     })
 
     it('A blog can be created', function () {
@@ -152,7 +155,8 @@ describe('Blog app', function () {
         cy.contains('This is a test blog - Tom A').click()
 
         cy.get('html')
-          .should('contain', 'This is a test blog - Tom A')
+          .should('contain', 'This is a test blog')
+          .should('contain', 'by Tom A')
           .and('not.contain', 'Delete blog')
       })
     })
