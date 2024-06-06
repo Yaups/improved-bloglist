@@ -31,11 +31,15 @@ const BlogList = ({ showWelcomeInfo, user }) => {
       )}
       <div className="container" style={{ padding: containerMargin }}>
         <h2 className="title">Blogs</h2>
-        <hr />
-        <Togglable buttonText="Open new blog form">
-          <h5 className="title is-5">Post a new blog:</h5>
-          <BlogForm />
-        </Togglable>
+        {user && (
+          <div>
+            <hr />
+            <Togglable buttonText="Open new blog form">
+              <h5 className="title is-5">Post a new blog:</h5>
+              <BlogForm />
+            </Togglable>
+          </div>
+        )}
         <hr />
         <div className="container" style={flexContainerStyle}>
           {blogs

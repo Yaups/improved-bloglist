@@ -63,7 +63,7 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<BlogList showWelcomeInfo user={user} />} />
-        <Route path="/blogs" element={<BlogList />} />
+        <Route path="/blogs" element={<BlogList user={user} />} />
         <Route path="/users" element={<UsersInfo />} />
         <Route
           path="/users/:id"
