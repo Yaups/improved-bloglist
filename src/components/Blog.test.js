@@ -35,14 +35,16 @@ test('<Blog /> renders all content apart from the delete button when not logged 
     />,
   )
 
-  const titleAndAuthor = screen.getByText(`${blog.title} - ${blog.author}`)
+  const title = screen.getByText(blog.title)
+  const byAuthor = screen.getByText(`by ${blog.author}`)
   const likes = screen.queryByText(`Likes: ${blog.likes}`)
   const url = screen.queryByText(blog.url)
   const postedBy = screen.queryByText(`Posted by ${blog.user.name}`)
   const deleteButton = screen.queryByText('Delete blog')
 
   expect(deleteButton).toBe(null)
-  expect(titleAndAuthor).toBeDefined()
+  expect(title).toBeDefined()
+  expect(byAuthor).toBeDefined()
   expect(likes).toBeDefined()
   expect(url).toBeDefined()
   expect(postedBy).toBeDefined()
@@ -79,14 +81,16 @@ test('<Blog /> renders the delete button when logged in as the blog poster', () 
     />,
   )
 
-  const titleAndAuthor = screen.getByText(`${blog.title} - ${blog.author}`)
+  const title = screen.getByText(blog.title)
+  const byAuthor = screen.getByText(`by ${blog.author}`)
   const likes = screen.queryByText(`Likes: ${blog.likes}`)
   const url = screen.queryByText(blog.url)
   const postedBy = screen.queryByText(`Posted by ${blog.user.name}`)
   const deleteButton = screen.queryByText('Delete blog')
 
   expect(deleteButton).toBeDefined()
-  expect(titleAndAuthor).toBeDefined()
+  expect(title).toBeDefined()
+  expect(byAuthor).toBeDefined()
   expect(likes).toBeDefined()
   expect(url).toBeDefined()
   expect(postedBy).toBeDefined()

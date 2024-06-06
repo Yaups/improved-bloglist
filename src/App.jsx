@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import TitleHeader from './components/TitleHeader'
 import Message from './components/Message'
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
@@ -53,29 +54,15 @@ const App = () => {
       ? blogs.find((blog) => blog.id === blogMatch.params.id)
       : null
 
-  if (!user) {
-    return (
-      <div className="container" style={{ padding: 30 }}>
-        <Message />
-
-        <Routes>
-          <Route path="/" element={<LoginForm />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/account_deletion" element={<AccountDeletion />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </div>
-    )
-  }
-
   return (
-    <div className="container">
+    <div className="container" style={{ padding: 30 }}>
+      <TitleHeader />
       <NavBar />
 
       <Message />
 
       <Routes>
-        <Route path="/" element={<BlogList />} />
+        <Route path="/" element={<BlogList showWelcomeInfo user={user} />} />
         <Route path="/blogs" element={<BlogList />} />
         <Route path="/users" element={<UsersInfo />} />
         <Route
@@ -83,6 +70,7 @@ const App = () => {
           element={<UserInfo matchingUser={matchingUser} />}
         />
         <Route path="/blogs/:id" element={<Blog blog={matchingBlog} />} />
+        <Route path="/login" element={<LoginForm />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/account_deletion" element={<AccountDeletion />} />
         <Route path="*" element={<Navigate to="/" replace />} />
