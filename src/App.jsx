@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import TitleHeader from './components/TitleHeader'
+import AboutMe from './components/AboutMe'
 import Message from './components/Message'
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
@@ -71,6 +72,7 @@ const App = () => {
         />
         <Route path="/blogs/:id" element={<Blog blog={matchingBlog} />} />
         <Route path="/login" element={<LoginForm />} />
+        <Route path="/about" element={<AboutMe />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/account_deletion" element={<AccountDeletion />} />
         <Route path="*" element={<Navigate to="/" replace />} />
