@@ -49,6 +49,9 @@ const NavBar = () => {
             <Link className="navbar-item" to="/users">
               Users
             </Link>
+            <Link className="navbar-item" to="/about">
+              About
+            </Link>
             {!user && (
               <Link className="navbar-item" to="/login">
                 Log in
