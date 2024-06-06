@@ -116,7 +116,7 @@ export const BlogContainer = ({
   return (
     <div className="container" style={{ textAlign: 'center' }}>
       <div>
-        <div className="button is-link is-light is-outlined">
+        <div>
           <h1 className="title">
             <a href={blog.url} target="_blank" rel="noreferrer">
               {blog.title}
