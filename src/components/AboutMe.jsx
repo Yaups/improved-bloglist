@@ -25,23 +25,20 @@ const AboutMe = () => {
       </p>
       <br />
       <p>
-        This website was written with React on the front-end, and uses Express
-        for the back-end, with MongoDB used as the choice of database. A fully
-        functioning CI/CD pipeline, using GitHub Actions, triggers on every Git
-        commit to the working repository. A full testing regime is automatically
-        carried out including unit, integration and end-to-end tests. If even
-        one test fails, the build will not succeed and the deployment update
-        will not occur.
+        This website was originally written with React on the front-end, and
+        used Express for the back-end, with MongoDB used as the choice of
+        database. A fully functioning CI/CD pipeline, using GitHub Actions,
+        triggers on every Git commit to the working repository. A full testing
+        regime is automatically carried out including unit, integration and
+        end-to-end tests. If even one test fails, the build will not succeed and
+        the deployment update will not occur.
       </p>
       <br />
       <p>
-        This is a simple single-page application website which functions as a
-        blog list. Any logged in user can post a link to an existing blog, and
-        any user can view existing posts and comment on them. There is no limit
-        to the amount of times a user can comment on a blog, and all comments
-        are anonymous. To reduce the possibility of spam posts, no accounts can
-        be created and I have only shared the login details to one of the
-        accounts on my covering letter accompanying job applications.
+        I have since ported the back-end API to ASP.NET, using C#, with the only
+        major modification being a change of database provider to SQLite. The
+        back-end API has retained the exact same functionality as before the
+        port. This new API is now hosted on Azure API apps.
       </p>
       <br />
       <p>
